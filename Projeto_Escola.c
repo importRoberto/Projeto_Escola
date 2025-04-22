@@ -250,6 +250,7 @@ int main() {
         printf("2 - Professor\n");
         printf("3 - Disciplina\n");
         printf("4 - Matricular Aluno em Disciplina\n");
+        printf("5 - Relatorios\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -277,6 +278,10 @@ int main() {
             case 4:
                 printf("\n--- Matricular Aluno em Disciplina ---\n");
                 MatricularAlunoEmDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos);
+                break;
+
+            case 5: 
+                ExibirMenuRelatorios(alunos, qtdAlunos, professores, qtdProfessores, disciplinas, qtdDisciplinas);
                 break;
 
             default:
