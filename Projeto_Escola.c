@@ -32,10 +32,12 @@ typedef struct {
     int qtdAlunos;
 } Disciplina;
 
+void ListarAlunos(Aluno alunos[], int qtdAlunos);
+
 // Função auxiliar para preencher dados comuns
 void PreencherDadosComuns(char nome[], int *matricula, char dataNascimento[], char *sexo, char cpf[]) {
     printf("Nome: ");
-    getchar(); 
+    while (getchar() != '\n'); // consome qualquer coisa no buffer
     fgets(nome, 100, stdin);
     nome[strcspn(nome, "\n")] = '\0';
 
@@ -161,6 +163,74 @@ void MatricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, A
     if (!encontrado) {
         printf("Disciplina não encontrada.\n");
     }
+}
+//Função para listar os alunos cadastrados
+void ListarAlunos(Aluno alunos[], int qtdAlunos) {
+    if (qtdAlunos == 0) {
+        printf("Nenhum aluno cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < qtdAlunos; i++) {
+        printf("Nome: %s\n", alunos[i].nome);
+        printf("Matrícula: %d\n", alunos[i].matricula);
+        printf("Data de Nascimento: %s\n", alunos[i].dataNascimento);
+        printf("Sexo: %c\n", alunos[i].sexo);
+        printf("CPF: %s\n", alunos[i].cpf);
+        printf("-----------------------------\n");
+    }
+}
+
+//Função para menu de relatorios
+void ExibirMenuRelatorios(Aluno alunos[], int qtdAlunos, Professor professores[], int qtdProfessores, Disciplina disciplinas[], int qtdDisciplinas) {
+    int opcaoRelatorio;
+
+    do {
+        printf("\n--- Relatórios ---\n");
+        printf("1 - Listar Alunos\n");
+        printf("2 - Listar Professores\n");
+        printf("3 - Listar Disciplinas (sem alunos)\n");
+        printf("4 - Listar uma Disciplina (com alunos)\n");
+        printf("5 - Listar Alunos por sexo\n");
+        printf("6 - Listar Alunos ordenados por nome\n");
+        printf("7 - Listar Alunos ordenados por data de nascimento\n");
+        printf("8 - Listar Professores por sexo\n");
+        printf("9 - Listar Professores ordenados por nome\n");
+        printf("10 - Listar Professores ordenados por data de nascimento\n");
+        printf("11 - Aniversariantes do mês\n");
+        printf("12 - Buscar pessoa por substring no nome\n");
+        printf("13 - Alunos com menos de 3 disciplinas\n");
+        printf("14 - Disciplinas com mais de 40 alunos\n");
+        printf("0 - Voltar ao menu principal\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcaoRelatorio);
+        getchar();
+
+        switch(opcaoRelatorio) {
+            case 1:
+                ListarAlunos(alunos, qtdAlunos);
+                break;
+            case 2:
+                // ListarProfessores(...);
+                break;
+            case 3:
+                // ListarDisciplinas(...);
+                break;
+            case 4:
+                // ListarDisciplinaComAlunos(...);
+                break;
+            case 5:
+                // ListarAlunosPorSexo(...);
+                break;
+            // e assim por diante...
+            case 0:
+                printf("Voltando ao menu principal...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+
+    } while(opcaoRelatorio != 0);
 }
 
 int main() {
