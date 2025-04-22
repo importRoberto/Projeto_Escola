@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAX 100
 #define MAX_ALUNOS 100
@@ -33,6 +34,22 @@ typedef struct {
 } Disciplina;
 
 void ListarAlunos(Aluno alunos[], int qtdAlunos);
+
+//Função para converter para maiúsculos
+void ToUpperStr(char destino[], const char origem[]) {
+    int i = 0;
+    while (origem[i] != '\0') {
+        destino[i] = toupper(origem[i]);
+        i++;
+    }
+    destino[i] = '\0';
+}
+//Limpeza de buffer após utilizar scanf
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 
 // Função auxiliar para preencher dados comuns
 void PreencherDadosComuns(char nome[], int *matricula, char dataNascimento[], char *sexo, char cpf[]) {
@@ -162,6 +179,69 @@ void MatricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, A
 
     if (!encontrado) {
         printf("Disciplina não encontrada.\n");
+    }
+}
+//Função para remover aluno
+
+void removerAluno(Aluno alunos[], int *qtdAlunos){
+    if(*qtdAlunos ==0){
+        printf("Não há alunos cadastrados.\n");
+        return;
+    }
+
+    char busca[100];
+    printf("Digte o nome(ou parte) para buscar o aluno:");
+    limparBuffer();
+    fgets(busca, sizeof(busca),stdin);
+    busca[strcspn(busca, "\n")] = '\0';
+
+    char buscaUpper[100];
+    ToUpperStr(buscaUpper, busca);
+
+    int encontrados[MAX];
+    int qtdEnconstrados =0 ;
+    
+    for(int i =0; i<*qtdAlunos; i++){
+        char nomeUpper[100];
+        ToUpperStr(nomeUpper, alunos[i].nome);
+
+        if(strstr(nomeUpper, buscaUpper) != NULL){
+            printf("[%d]-Nome: %s | Matrícula: %d\n", qtdEnconstrados, alunos[i].nome, alunos[i].matricula);
+            encontrados[qtdEnconstrados] = i ;
+            qtdEnconstrados++;
+        }
+    }
+
+    if(qtdEnconstrados == 0){
+        printf("Nenhum aluno encontrado com o nome informado.\n");
+        return;
+    }
+
+    int opcao;
+    printf("Digite o índice do aluno que deseja remover:");
+    scanf("%d", &opcao);
+    limparBuffer();
+
+    if(opcao<0 || opcao>=qtdEnconstrados){
+        printf("Índice inválido.\n");
+        return;
+    }
+
+    int indiceReal = enconstrados[indiceEscolhido];
+
+    char confirmacao; 
+    printf("Tem certeza que deseja remover o aluno %s? (S/N)");
+    scanf(" %c", &confirmacao);
+    limparBuffer();
+    
+    if(confirmacao == 'S' || confirmacao =='s'){
+        for(int i = indiceReal; i < *qtdAlunos -1; i++){
+            alunos[i]= alunos[i+1];
+        }
+        (*qtdAlunos)--;
+        printf("Aluno removido com sucesso!\n");
+    }else{
+        printf("Remoção cancelada.\n");
     }
 }
 //Função para listar os alunos cadastrados
