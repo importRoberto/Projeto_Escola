@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "../include/funcoes.h"
+#include "funcoes.h"
 
 void PreencherDadosComuns(char nome[], int *matricula, char dataNascimento[], char *sexo, char cpf[]) {
     printf("Nome: ");
