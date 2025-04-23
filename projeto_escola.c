@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../include/funcoes.h"
-#include "../include/relatorios.h"
+#include "funcoes.h"
+#include "relatorios.h"
 
 int main() {
     Aluno alunos[MAX];
