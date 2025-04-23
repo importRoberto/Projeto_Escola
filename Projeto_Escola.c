@@ -199,7 +199,7 @@ void removerAluno(Aluno alunos[], int *qtdAlunos){
     ToUpperStr(buscaUpper, busca);
 
     int encontrados[MAX];
-    int qtdEnconstrados =0 ;
+    int qtdEncontrados =0 ;
     
     for(int i =0; i<*qtdAlunos; i++){
         char nomeUpper[100];
@@ -243,6 +243,27 @@ void removerAluno(Aluno alunos[], int *qtdAlunos){
     }else{
         printf("Remoção cancelada.\n");
     }
+}
+
+void removerProfessor(Professor professores[], int *qtdProfessor){
+    if(*qtdProfessor==0){
+        printf("Não existe professores cadastrados.\n");
+        return;
+    }
+
+    char busca[100];
+    printf("Digite o nome(ou parte) para buscar o professor:");
+    fgets(busca, sizeof(busca), stdin);
+    busca[strcspn(busca, "\n")]= '\0';
+
+    char buscaUpper[100];
+    ToUpperStr(buscaUpper, busca);
+
+    int encontrados[MAX];
+    int qtdEncontrados = 0;
+
+    
+
 }
 //Função para listar os alunos cadastrados
 void ListarAlunos(Aluno alunos[], int qtdAlunos) {
