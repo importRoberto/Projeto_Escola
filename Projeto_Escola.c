@@ -206,13 +206,13 @@ void removerAluno(Aluno alunos[], int *qtdAlunos){
         ToUpperStr(nomeUpper, alunos[i].nome);
 
         if(strstr(nomeUpper, buscaUpper) != NULL){
-            printf("[%d]-Nome: %s | Matrícula: %d\n", qtdEnconstrados, alunos[i].nome, alunos[i].matricula);
-            encontrados[qtdEnconstrados] = i ;
-            qtdEnconstrados++;
+            printf("[%d]-Nome: %s | Matrícula: %d\n", qtdEncontrados, alunos[i].nome, alunos[i].matricula);
+            encontrados[qtdEncontrados] = i;
+            qtdEncontrados++;
         }
     }
 
-    if(qtdEnconstrados == 0){
+    if(qtdEncontrados == 0){
         printf("Nenhum aluno encontrado com o nome informado.\n");
         return;
     }
@@ -222,15 +222,15 @@ void removerAluno(Aluno alunos[], int *qtdAlunos){
     scanf("%d", &opcao);
     limparBuffer();
 
-    if(opcao<0 || opcao>=qtdEnconstrados){
+    if(opcao<0 || opcao>=qtdEncontrados){
         printf("Índice inválido.\n");
         return;
     }
 
-    int indiceReal = enconstrados[indiceEscolhido];
+    int indiceReal = encontrados[indiceEscolhido];
 
     char confirmacao; 
-    printf("Tem certeza que deseja remover o aluno %s? (S/N)");
+    printf("Tem certeza que deseja remover o aluno %s? (S/N)", alunos[i].nome);
     scanf(" %c", &confirmacao);
     limparBuffer();
     
@@ -262,7 +262,42 @@ void removerProfessor(Professor professores[], int *qtdProfessor){
     int encontrados[MAX];
     int qtdEncontrados = 0;
 
+    for (int i =0; i <*qtdProfessor; i++){
+        char nomeUpper[100];
+        ToUpperStr(nomeUpper, professores[i].nome);
+
+        if(strstr(nomeUpper, buscaUpper) != NULL){
+            printf("[%d]-Nome: %s | Matrícula: %d\n", qtdEncontrados, professores[i].nome, professores[i].matricula);
+            encontrados[qtdEncontrados] = i ;
+            qtdEncontrados++;
+        }
+    }
+
+    if(qtdEncontrados == 0){
+        printf("Nenhum professor encontrado.\n");
+        return;
+    }
+
+    int opcao;
+    printf("Digite o índice do professor que deseja remover:");
+    scanf("%d", &opcao);
+    limparBuffer();
+
+    if (opcao <0 || opcao>=qtdEncontrados){
+        printf("Índice inválido.\n");
+        return;
+    }
+
+    int indiceReal= encontrados[indiceEscolhido];
     
+    char confirmacao;
+    printf("Tem certeza que deseja remover o professor &? (S/N): ", professores[i].nome);
+    scanf("%c", &confirmacao);
+    limparBuffer();
+
+    if(confirmacao=='S' || confirmacao ==)
+
+
 
 }
 //Função para listar os alunos cadastrados
