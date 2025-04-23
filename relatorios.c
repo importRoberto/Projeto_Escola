@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../include/relatorios.h"
+#include "relatorios.h"
 
 void ListarAlunos(Aluno alunos[], int qtdAlunos) {
     if (qtdAlunos == 0) {
