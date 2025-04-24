@@ -309,8 +309,15 @@ void removerProfessor(Professor professores[], int *qtdProfessor){
     scanf("%c", &confirmacao);
     limparBuffer();
 
-    if(confirmacao=='S' || confirmacao ==)
-
+    if(confirmacao=='S' || confirmacao == 's'){
+        for(int i= indiceReal; i<*qtdProfessor -1; i++){
+            professores[i]= professores[i+1];
+        }
+        (*qtdProfessor)--;
+        printf("Professor removido com sucesso!\n");
+    }else{
+        printf("Remoção cancelada.\n");
+    }
 }
 
 //Função para menu de relatorios
