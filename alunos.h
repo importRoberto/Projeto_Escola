@@ -3,13 +3,7 @@
 
 #define MAX 100
 
-typedef struct {
-    char nome[100];
-    int matricula;
-    char dataNascimento[11]; // DD/MM/AAAA
-    char sexo;
-    char cpf[15]; // 000.000.000-00
-} Aluno;
+#include "alunos.h"
 
 void CadastrarAluno(Aluno alunos[], int *qtdAlunos);
 void ListarAlunos(Aluno alunos[], int qtdAlunos);
