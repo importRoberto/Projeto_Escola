@@ -389,6 +389,7 @@ int main() {
         printf("2 - Professor\n");
         printf("3 - Disciplina\n");
         printf("4 - Matricular Aluno em Disciplina\n");
+        printf("5 - Relatórios\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -418,6 +419,10 @@ int main() {
                 MatricularAlunoEmDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos);
                 break;
 
+            case 5:
+                ExibirMenuRelatorios(alunos, qtdAlunos, professores, qtdProfessores, disciplinas, qtdDisciplinas);
+                break;
+            
             default:
                 printf("Opcao Invalida\n");
                 break;
