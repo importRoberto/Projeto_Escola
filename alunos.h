@@ -1,5 +1,5 @@
-#ifndef ALUNO_H
-#define ALUNO_H
+#ifndef ALUNOS_H
+#define ALUNOS_H
 
 #define MAX 100
 
