@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "aluno.h"
+#include "alunos.h"
 #include "utils.h"
 
 // Função para cadastrar aluno
