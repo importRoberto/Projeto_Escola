@@ -3,6 +3,7 @@
 #include "professores.h"
 #include "disciplinas.h"
 #include "relatorios.h"
+#include "structs.h"
 
 int main() {
     Aluno alunos[MAX];
