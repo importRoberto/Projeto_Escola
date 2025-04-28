@@ -2,6 +2,7 @@
 #include <string.h>
 #include "alunos.h"
 #include "utils.h"
+#include "structs.h"
 
 // Função para cadastrar aluno
 void CadastrarAluno(Aluno alunos[], int *qtdAlunos) {

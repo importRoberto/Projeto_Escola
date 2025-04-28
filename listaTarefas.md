@@ -9,6 +9,7 @@
   - [ ] Atualizar aluno
   - [ ] Validar CPF
   - [ ] Validar data de nascimento
+  - [x] Validar sexo
 
 #### 👨‍🏫 Professores
 - [ ] Cadastro de Professores
@@ -17,7 +18,7 @@
   - [ ] Atualizar professor
   - [ ] Validar CPF
   - [ ] Validar data de nascimento
-
+  - [x] Validar sexo
 #### 📚 Disciplinas
 - [ ] Cadastro de Disciplinas
   - [ ] Incluir disciplina

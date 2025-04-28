@@ -2,6 +2,8 @@
 #include <string.h>
 #include "professores.h"
 #include "utils.h"
+#include "structs.h"
+
 
 void CadastrarProfessor(Professor professores[], int *qtdProfessores) {
     if (*qtdProfessores >= MAX) {
