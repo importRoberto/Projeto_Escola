@@ -4,29 +4,86 @@
 
 #### 👨‍🎓 Alunos
 - [ ] Cadastro de Alunos
-  - [ ] Incluir aluno
+  - [ ] Incluir aluno em disciplina:
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Excluir aluno
+    - Testada:
+      - [ ] Sim
+      - [x] Não
   - [ ] Atualizar aluno
+    - Testada:
+      - [ ] Sim
+      - [x] Não
   - [ ] Validar CPF
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Validar data de nascimento
-  - [x] Validar sexo
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
+  - [ ] Validar sexo
+    - Testada:
+      - [ ] Sim
+      - [x] Não
 
+---
 #### 👨‍🏫 Professores
 - [ ] Cadastro de Professores
   - [ ] Incluir professor
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Excluir professor
+    - Testada:
+      - [ ] Sim
+      - [x] Não
   - [ ] Atualizar professor
+    - Testada:
+      - [ ] Sim
+      - [x] Não
   - [ ] Validar CPF
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Validar data de nascimento
-  - [x] Validar sexo
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
+  - [ ] Validar sexo
+    - Testada:
+      - [ ] Sim
+      - [x] Não
+
+--- 
 #### 📚 Disciplinas
 - [ ] Cadastro de Disciplinas
   - [ ] Incluir disciplina
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Excluir disciplina
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Atualizar disciplina
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Associar professor à disciplina
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Inserir aluno em disciplina
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
   - [ ] Excluir aluno de disciplina
+    - Testada:
+      - [ ] Sim
+      - [ ] Não
 
 ---
 
