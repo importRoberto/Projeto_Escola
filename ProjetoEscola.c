@@ -474,6 +474,37 @@ void listarTodasDisciplinas(Disciplina disciplinas[], int qtdDisciplinas){
 }
 
 
+void listarDisciplinasMais40(Disciplina disciplinas[], int *qtdDisciplinas){
+    int encontrou = 0;
+    printf("\n--- Lista de Disciplinas com mais de 40 alunos ---\n");
+    for(int i =0; i < *qtdDisciplinas; i++){
+        if(disciplinas[i].qtdAlunos>40){
+        printf("[%d] Nome: %s | Código: %s | Professor: %s\n", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor);
+        encontrou = 1;
+    }
+}
+    if (!encontrou){
+        printf("Nenuma disciplina com mais de 40 alunos cadastrados.");
+
+    }
+    printf("--------------------------------\n");
+}
+
+void listarDisciplinaSemALuno(Disciplina disciplinas[], int *qtdDisciplinas){
+    int encontrou = 0;
+    printf("\n--- Lista de disciplinas sem nenhum aluno cadastrado ---\n");
+    for(int i =0; i < *qtdDisciplinas; i++){
+        if(disciplinas[i].qtdAlunos==0){
+            printf("[%d] Nome: %s | Código: %s", i +1, disciplinas[i].nome, disciplinas[i].codigo);
+        }
+    }
+    if(!encontrou){
+        printf("Nenhuma disciplina sem aluno cadastrado.");
+    }
+    printf("--------------------------------\n");
+}
+
+
 void MatricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos) {
     char codigoBusca[10];
     int matriculaBusca, encontrado = 0;
