@@ -457,6 +457,15 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas) {
     printf("\nDisciplina cadastrada com sucesso!\n\n");
 }
 
+void listarTodasDisciplinas(Disciplina disciplinas[], int *qtdDisciplinas){
+    printf("\n--- Lista de Disciplinas ---\n");
+    for(int i =0; i <qtdDisciplinas; i++){
+        printf("[%d] Nome: %s | Código: %s | Professor: %s\n", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor);
+
+    }
+    printf("--------------------------------\n");
+}
+
 void MatricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos) {
     char codigoBusca[10];
     int matriculaBusca, encontrado = 0;
@@ -499,6 +508,53 @@ void MatricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, A
     if (!encontrado) {
         printf("Disciplina não encontrada.\n");
     }
+}
+
+void removerDisciplina(Disciplina disciplinas[], int *qtdDisciplinas){
+    if(qtdDisciplinas == 0){
+        printf("Não há disciplinas cadastradas.\n");
+        return;
+    }
+
+    int opcao = -1;
+    do{
+
+    listarTodasDisciplinas(disciplinas, *qtdDisciplinas);
+    
+    printf("Digite o número da disciplina que deseja remover (ou 0 para sair):");
+    scanf("%d", &opcao);
+    limparBuffer();
+    
+    if (opcao == 0){
+        printf("Remoção cancelada.");
+        return;
+        }
+
+    if(opcao <1 || opcao>*qtdDisciplinas){
+        printf("Escolha inválida, tente novamente.\n\n");
+        }
+
+    }while(opcao <1 || opcao>*qtdDisciplinas);
+
+    int indice = opcao - 1;
+
+    printf("Deseja realmente remover a disciplina %s?", disciplinas[indice].nome);
+    char confirmacao;
+    scanf(" %c", &confirmacao);
+    limparBuffer();
+    confirmacao = toupper(confirmacao);
+
+    if(confirmacao != 'S'){
+        printf("Remoção cancelada.\n");
+        return;
+    }
+    for(int i = indice; i <(*qtdDisciplinas) -1; i++){
+        disciplinas[i] = disciplinas[i+1];
+    }
+    (*qtdDisciplinas)--;
+
+    printf("Disciplina removida com sucesso.\n");
+
 }
 
 

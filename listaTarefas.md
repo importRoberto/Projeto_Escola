@@ -67,7 +67,7 @@
   - [ ] Excluir disciplina
     - Testada:
       - [ ] Sim
-      - [ ] Não
+      - [x] Não
   - [ ] Atualizar disciplina
     - Testada:
       - [ ] Sim
