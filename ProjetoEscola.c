@@ -435,6 +435,51 @@ void atualizarProfessor(Professor professores[], int qtdProfessores){
     
 }
 
+// Funções de Listagem de Professor
+void listarTodosProfessores(Professor professores[], int qtdProfessores){
+    if(qtdProfessores == 0){
+        printf("Não há professores cadastrados.");
+        return;
+    }
+    printf("\n--- Lista de Professores ---\n");
+    for(int i =0; i <qtdProfessores; i++){
+        printf("Nome: %s\n", professores[i].nome);
+        printf("Matrícula: %d\n", professores[i].matricula);
+        printf("Data de Nascimento: %s\n", professores[i].dataNascimento);
+        printf("Sexo: %c\n", professores[i].sexo);
+        printf("CPF: %s\n", professores[i].cpf);
+        printf("-----------------------------\n");
+
+    }
+}
+
+void listarProfessorPorNome(Professor professores[], int qtdProfessores){
+    if(qtdProfessores==0){
+        printf("Não existem professores cadastrados.\n");
+        return;
+    }
+
+    //Ordena os professores por nome utilizando Bubble Sort
+    for(int i=0; i < qtdProfessores -1; i++){
+        for(int j = 0; i <qtdProfessores - i - 1 ; j++){
+            if(strcmp(professores[j].nome, professores[j +1].nome)>0){
+                Professor temp = professores[j];
+                professores[j] = professores[j +1];
+                professores[j+1] = temp;
+            }
+        }
+    }
+    
+    printf("\n--- Lista de professores ordenada em ordem alfabética ---\n");
+    for(int i =0; i <qtdProfessores; i++){
+        printf("Nome: %s\n", professores[i].nome);
+        printf("Matrícula: %d\n", professores[i].matricula);
+        printf("Data de Nascimento: %s\n", professores[i].dataNascimento);
+        printf("Sexo: %c\n", professores[i].sexo);
+        printf("CPF: %s\n", professores[i].cpf);
+    }
+    printf("-----------------------------\n");
+}
 
 
 //Bloco funções disciplina

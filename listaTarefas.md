@@ -97,14 +97,14 @@
 - [ ] Listar alunos matriculados em menos de 3 disciplinas
 
 #### 🧑‍🏫 Professores
-- [ ] Listar todos os professores
+- [x] Listar todos os professores
 - [ ] Listar professores por sexo
 - [ ] Listar professores ordenados por nome
 - [ ] Listar professores ordenados por data de nascimento
 
 #### 🏛️ Disciplinas
 - [x] Listar todas as disciplinas (sem alunos)
-- [ ] Listar uma disciplina com seus alunos matriculados
+- [x] Listar uma disciplina com seus alunos matriculados
 - [x] Listar disciplinas com mais de 40 alunos matriculados
 - [x] Listar disciplinas com nome do professor
 
