@@ -99,7 +99,7 @@
 #### 🧑‍🏫 Professores
 - [x] Listar todos os professores
 - [ ] Listar professores por sexo
-- [ ] Listar professores ordenados por nome
+- [x] Listar professores ordenados por nome
 - [ ] Listar professores ordenados por data de nascimento
 
 #### 🏛️ Disciplinas
