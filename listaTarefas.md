@@ -103,10 +103,10 @@
 - [ ] Listar professores ordenados por data de nascimento
 
 #### 🏛️ Disciplinas
-- [ ] Listar todas as disciplinas (sem alunos)
+- [x] Listar todas as disciplinas (sem alunos)
 - [ ] Listar uma disciplina com seus alunos matriculados
-- [ ] Listar disciplinas com mais de 40 alunos matriculados
-- [ ] Listar disciplinas com nome do professor
+- [x] Listar disciplinas com mais de 40 alunos matriculados
+- [x] Listar disciplinas com nome do professor
 
 #### 🎉 Outros relatórios
 - [ ] Listar aniversariantes do mês (alunos e professores)

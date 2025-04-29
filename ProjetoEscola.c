@@ -273,7 +273,9 @@ void atualizarAluno(Aluno alunos[], int qtdAlunos){
     
 }
 
-// Bloco de funções de Professor
+
+/* Bloco de funções de Professor: Nesse bloco encontrará todas as funções relacionadas
+ a professor, função de cadastro, atualização e exclusão.*/
 
 void CadastrarProfessor(Professor professores[], int *qtdProfessores) {
     if (*qtdProfessores >= MAX) {
@@ -474,10 +476,10 @@ void listarTodasDisciplinas(Disciplina disciplinas[], int qtdDisciplinas){
 }
 
 
-void listarDisciplinasMais40(Disciplina disciplinas[], int *qtdDisciplinas){
+void listarDisciplinasMais40(Disciplina disciplinas[], int qtdDisciplinas){
     int encontrou = 0;
     printf("\n--- Lista de Disciplinas com mais de 40 alunos ---\n");
-    for(int i =0; i < *qtdDisciplinas; i++){
+    for(int i =0; i < qtdDisciplinas; i++){
         if(disciplinas[i].qtdAlunos>40){
         printf("[%d] Nome: %s | Código: %s | Professor: %s\n", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor);
         encontrou = 1;
@@ -490,10 +492,10 @@ void listarDisciplinasMais40(Disciplina disciplinas[], int *qtdDisciplinas){
     printf("--------------------------------\n");
 }
 
-void listarDisciplinaSemALuno(Disciplina disciplinas[], int *qtdDisciplinas){
+void listarDisciplinaSemALuno(Disciplina disciplinas[], int qtdDisciplinas){
     int encontrou = 0;
     printf("\n--- Lista de disciplinas sem nenhum aluno cadastrado ---\n");
-    for(int i =0; i < *qtdDisciplinas; i++){
+    for(int i =0; i < qtdDisciplinas; i++){
         if(disciplinas[i].qtdAlunos==0){
             printf("[%d] Nome: %s | Código: %s", i +1, disciplinas[i].nome, disciplinas[i].codigo);
         }
@@ -504,6 +506,60 @@ void listarDisciplinaSemALuno(Disciplina disciplinas[], int *qtdDisciplinas){
     printf("--------------------------------\n");
 }
 
+void listarAlunoPorDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos){
+    char termoBusca[100];
+    char termoBuscaToUpper[100];
+    int encontrou = 0 ;
+
+    printf("Digite o nome (ou parte dele) ou o código da disciplina para buscar:");
+    fgets(termoBusca, sizeof(termoBusca), stdin);
+
+    termoBusca[strcspn(termoBusca, "\n")] ='\0';
+    ToUpperStr(termoBuscaToUpper, termoBusca);
+
+    
+
+    for(int i = 0; i < qtdDisciplinas; i++){
+        char nomeToUpper[100];
+        char codigoToUpper[10];
+
+        ToUpperStr(nomeToUpper, disciplinas[i].nome);
+        ToUpperStr(codigoToUpper, disciplinas[i].codigo);
+
+        if(strstr(nomeToUpper, termoBuscaToUpper) != NULL || strcmp(codigoToUpper, termoBuscaToUpper) == 0){
+            encontrou = 1 ;
+            printf(" Disciplina: %s | Código: %s", disciplinas[i].nome, disciplinas[i].codigo);
+            
+            if(disciplinas[i].qtdAlunos==0){
+                printf("Não há alunos cadastrados nessa disciplina.\n");
+            } else{
+                printf("\n--- Alunos matriculados ---\n");
+
+                for (int j = 0; j < disciplinas[i].qtdAlunos; j++){
+                    int matricula = disciplinas[i].alunosMatriculados[j];
+
+                    int achouAluno = 0;
+
+                    for(int b = 0; b < qtdAlunos; b++){
+                        if(alunos[b].matricula == matricula){
+                            printf("- Nome: %s | Matrícula: %d | Data de nascimento: %s | CPF: %s | Sexo: %c\n\n", 
+                                alunos[b].nome, alunos[b].matricula, alunos[b].dataNascimento, alunos[b].cpf, alunos[b].sexo);
+                            
+                            break;
+                        }
+                    }
+                
+                }
+            }
+            printf("--------------------------------\n");
+        }
+
+    }
+
+    if(!encontrou){
+        printf("Nenhuma disciplina encontrada com esse nome ou código.\n");
+    }
+}
 
 void MatricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos) {
     char codigoBusca[10];
