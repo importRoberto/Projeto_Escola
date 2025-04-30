@@ -805,14 +805,18 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
     Disciplina nova;
     char nomeProfessor[100];
     int professorEncontrado = 0;
+    char nomeDisciplinaTemp[100];
 
     printf("Nome da disciplina: ");
-    fgets(nova.nome, 100, stdin);
-    nova.nome[strcspn(nova.nome, "\n")] = '\0';
+    fgets(nomeDisciplinaTemp, 100, stdin);
+    nomeDisciplinaTemp[strcspn(nomeDisciplinaTemp, "\n")] = '\0';
+    ToUpperStr(nova.nome, nomeDisciplinaTemp);
 
+    char codigoTemp[10];
     printf("Código da disciplina: ");
-    scanf("%s", nova.codigo);
+    scanf("%s", codigoTemp);
     limparBuffer();
+    ToUpperStr(nova.codigo, codigoTemp);
     
     printf("Semestre: ");
     scanf("%d", &nova.semestre);
@@ -822,18 +826,26 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
     scanf("%d", &nova.capacidadeMaxima);
     limparBuffer();
 
-    // Validação do professor
+    // Validação do professor (com case-insensitive)
     do {
         printf("Nome do professor responsável: ");
         fgets(nomeProfessor, 100, stdin);
         nomeProfessor[strcspn(nomeProfessor, "\n")] = '\0';
 
-        // Verifica se o professor existe
+        // Converter entrada para maiúsculas
+        char nomeProfessorUpper[100];
+        ToUpperStr(nomeProfessorUpper, nomeProfessor);
+
         professorEncontrado = 0;
         for(int i = 0; i < qtdProfessores; i++) {
-            if(strcmp(professores[i].nome, nomeProfessor) == 0) {
+            // Converter nome do professor cadastrado para maiúsculas
+            char nomeCadastradoUpper[100];
+            ToUpperStr(nomeCadastradoUpper, professores[i].nome);
+
+            // Comparar versões em maiúsculas
+            if(strcmp(nomeCadastradoUpper, nomeProfessorUpper) == 0) {
                 professorEncontrado = 1;
-                strcpy(nova.professor, nomeProfessor);
+                strcpy(nova.professor, professores[i].nome); // Usa o nome original
                 break;
             }
         }
@@ -1050,19 +1062,21 @@ void atualizarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
 
     printf("\nAtualizando disciplina: %s (%s)\n", d->nome, d->codigo);
     
-    // Nome
+    // --- Atualização do Nome (com conversão para maiúsculas) ---
     printf("Novo nome (ENTER para manter '%s'): ", d->nome);
     fgets(buffer, sizeof(buffer), stdin);
     if(buffer[0] != '\n') {
         buffer[strcspn(buffer, "\n")] = '\0';
+        ToUpperStr(buffer, buffer); // Converte para maiúsculas
         strcpy(d->nome, buffer);
     }
 
-    // Código
+    // --- Atualização do Código (com conversão para maiúsculas) ---
     printf("Novo código (ENTER para manter '%s'): ", d->codigo);
     fgets(buffer, sizeof(buffer), stdin);
     if(buffer[0] != '\n') {
         buffer[strcspn(buffer, "\n")] = '\0';
+        ToUpperStr(buffer, buffer); // Converte para maiúsculas
         strcpy(d->codigo, buffer);
     }
 
@@ -1080,18 +1094,26 @@ void atualizarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
         sscanf(buffer, "%d", &d->capacidadeMaxima);
     }
 
-    // Professor
+    // --- Atualização do Professor (com validação case-insensitive) ---
     while(1) {
         printf("Novo professor (ENTER para manter '%s'): ", d->professor);
         fgets(buffer, sizeof(buffer), stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
 
-        if(buffer[0] == '\n') break; // Mantém o atual
+        if(buffer[0] == '\n') break;
+
+        // Converter entrada para maiúsculas
+        char bufferUpper[100];
+        ToUpperStr(bufferUpper, buffer);
 
         int professorExiste = 0;
         for(int i = 0; i < qtdProfessores; i++) {
-            if(strcmp(professores[i].nome, buffer) == 0) {
-                strcpy(d->professor, buffer);
+            // Converter nome cadastrado para maiúsculas
+            char nomeCadastradoUpper[100];
+            ToUpperStr(nomeCadastradoUpper, professores[i].nome);
+
+            if(strcmp(nomeCadastradoUpper, bufferUpper) == 0) {
+                strcpy(d->professor, professores[i].nome); // Mantém formatação original
                 professorExiste = 1;
                 break;
             }
@@ -1123,7 +1145,6 @@ void atualizarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
 
     printf("Disciplina atualizada com sucesso!\n");
 }
-
 
 void removerDisciplina(Disciplina disciplinas[], int *qtdDisciplinas){
     if (*qtdDisciplinas == 0){  // Desreferenciar o ponteiro
