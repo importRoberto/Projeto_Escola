@@ -807,15 +807,16 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
     int professorEncontrado = 0;
 
     printf("Nome da disciplina: ");
-    limparBuffer();
     fgets(nova.nome, 100, stdin);
     nova.nome[strcspn(nova.nome, "\n")] = '\0';
 
     printf("Código da disciplina: ");
     scanf("%s", nova.codigo);
-
+    limparBuffer();
+    
     printf("Semestre: ");
     scanf("%d", &nova.semestre);
+    limparBuffer();
 
     printf("Capacidade máxima de alunos: ");
     scanf("%d", &nova.capacidadeMaxima);
@@ -1367,7 +1368,7 @@ int main() {
 				}
                 else if(opc ==4){
                     printf("\n--- Matricular Aluno em Disciplina ---\n");
-                    MatricularAlunoEmDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos);
+                    matricularAlunoEmDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos);
                 }
 				else {
 				    printf("Opção inválida.\n");
