@@ -44,7 +44,10 @@ typedef struct {
 } Disciplina;
 
 
-// Início do bloco de funções utilitárias.
+/*---------------------------------------------------------
+  BLOCO DE FUNÇÕES UTILITÁRIAS
+  Funções genéricas usadas em múltiplos módulos do sistema
+-----------------------------------------------------------*/
 void ToUpperStr(char destino[], const char origem[]) {
     int i = 0;
     while (origem[i] != '\0') {
@@ -102,7 +105,6 @@ void gerarMatriculaAluno(char matricula[]) {
     contadorProfessor++;
   }
 
-// Fim do bloco de funções utilitárias.
 
 void PreencherDadosComuns(char nome[], char matricula[], char dataNascimento[], char *sexo, char cpf[],int tipo) {
     char nomeOriginal[100];
@@ -165,6 +167,27 @@ void PreencherDadosComuns(char nome[], char matricula[], char dataNascimento[], 
 
 }
 
+int CompararDatas(const char *data1, const char *data2) {
+    int dia1, mes1, ano1;
+    int dia2, mes2, ano2;
+
+    sscanf(data1, "%d/%d/%d", &dia1, &mes1, &ano1);
+    sscanf(data2, "%d/%d/%d", &dia2, &mes2, &ano2);
+
+    if (ano1 != ano2)
+        return ano1 - ano2;
+    if (mes1 != mes2)
+        return mes1 - mes2;
+    return dia1 - dia2;
+}
+
+// Fim do bloco de funções utilitárias.
+
+/*---------------------------------------------------------
+  BLOCO DE FUNÇÕES DE ALUNO
+  Operações CRUD (Criar, Ler, Atualizar, Excluir) para alunos
+  Inclui listagens especiais e validações
+-----------------------------------------------------------*/
 
 // Função para cadastrar aluno
 void CadastrarAluno(Aluno alunos[], int *qtdAlunos) {
@@ -251,23 +274,11 @@ void ListarAlunosOrdenadosPorNome(Aluno alunos[], int qtdAlunos) {
 
     printf("\n--- Lista de Alunos Ordenados por Nome ---\n");
     for (int i = 0; i < qtdAlunos; i++) {
-        imprimirAluno(alunos[i]);
+        imprimirAluno(copia[i]);  
     }
 }
 
- int CompararDatas(const char *data1, const char *data2) {
-    int dia1, mes1, ano1;
-    int dia2, mes2, ano2;
 
-    sscanf(data1, "%d/%d/%d", &dia1, &mes1, &ano1);
-    sscanf(data2, "%d/%d/%d", &dia2, &mes2, &ano2);
-
-    if (ano1 != ano2)
-        return ano1 - ano2;
-    if (mes1 != mes2)
-        return mes1 - mes2;
-    return dia1 - dia2;
-}
 
 void ListarAlunosPorDataNascimento(Aluno alunos[], int qtdAlunos) {
     if (qtdAlunos == 0) {
@@ -322,7 +333,7 @@ void removerAluno(Aluno alunos[], int *qtdAlunos) {
         ToUpperStr(nomeUpper, alunos[i].nome);
 
         if (strstr(nomeUpper, buscaUpper) != NULL) {
-            printf("[%d] - Nome: %s | Matrícula: %d\n", qtdEncontrados, alunos[i].nome, alunos[i].matricula);
+            printf("[%d] - Nome: %s | Matrícula: %s\n", qtdEncontrados, alunos[i].nome, alunos[i].matricula);
             encontrados[qtdEncontrados] = i;
             qtdEncontrados++;
         }
@@ -386,7 +397,7 @@ void atualizarAluno(Aluno alunos[], int qtdAlunos){
         ToUpperStr(nomeUpper, alunos[i].nome);
 
         if(strstr(nomeUpper,buscaUpper)){
-            printf("[%d] Nome: %s | Matrícula: %d\n", qtdEncontrados, alunos[i].nome, alunos[i].matricula);
+            printf("[%d] Nome: %s | Matrícula: %s\n", qtdEncontrados, alunos[i].nome, alunos[i].matricula);
             encontrados[qtdEncontrados] = i;
             qtdEncontrados++;
         }
@@ -484,8 +495,11 @@ void ListarAniversariantesDoMes(Aluno alunos[], int qtdAlunos) {
     }
 }
 
-/* Bloco de funções de Professor: Nesse bloco encontrará todas as funções relacionadas
- a professor, função de cadastro, atualização e exclusão.*/
+/*---------------------------------------------------------
+  BLOCO DE FUNÇÕES DE PROFESSOR
+  Operações CRUD para professores com geração de matrícula
+  Valida integridade dos dados e relações com disciplinas
+-----------------------------------------------------------*/
 
 void CadastrarProfessor(Professor professores[], int *qtdProfessores) {
     if (*qtdProfessores >= MAX) {
@@ -497,7 +511,7 @@ void CadastrarProfessor(Professor professores[], int *qtdProfessores) {
     PreencherDadosComuns(novo.nome, novo.matricula, novo.dataNascimento, &novo.sexo, novo.cpf,2);
     professores[*qtdProfessores] = novo;
     (*qtdProfessores)++;
-    printf("\nProfessor cadastrado com sucesso! Matrícula: %s\n\n\n\n");
+    printf("\nProfessor cadastrado com sucesso! Matrícula: %s\n\n", novo.matricula);
 }
 
 void removerProfessor(Professor professores[], int *qtdProfessor) {
@@ -534,7 +548,7 @@ void removerProfessor(Professor professores[], int *qtdProfessor) {
     int opcao;
    while(1){
     printf("Digite o índice do professor que deseja remover:");
-    if(scanf("%d", &opcao)==1 && opcao<=0 && opcao >qtdEncontrados){
+    if(scanf("%d", &opcao)==1 && opcao>=0 && opcao <qtdEncontrados){
         limparBuffer();
         break;
     }else{
@@ -566,7 +580,6 @@ void atualizarProfessor(Professor professores[], int qtdProfessores){
 
     char busca[100];
     printf("Digite o nome (ou parte dele) para buscar o aluno:");
-    limparBuffer();
     fgets(busca, sizeof(busca), stdin);
     busca[strcspn(busca, "\n")] ='\0';
 
@@ -664,20 +677,25 @@ void listarProfessorPorNome(Professor professores[], int qtdProfessores){
         return;
     }
 
+    Professor copia[qtdProfessores];
+    for(int i =0; i <qtdProfessores; i++){
+        copia[i] = professores[i];
+    }
+
     //Ordena os professores por nome utilizando Bubble Sort
     for(int i=0; i < qtdProfessores -1; i++){
         for(int j = 0; j <qtdProfessores - i - 1 ; j++){
-            if(strcmp(professores[j].nome, professores[j +1].nome)>0){
-                Professor temp = professores[j];
-                professores[j] = professores[j +1];
-                professores[j+1] = temp;
+            if(strcmp(copia[j].nome, copia[j + 1].nome) > 0) {
+                Professor temp = copia[j];
+                copia[j] = copia[j + 1];
+                copia[j + 1] = temp;
             }
         }
     }
     
     printf("\n--- Lista de professores ordenada em ordem alfabética ---\n");
     for(int i =0; i <qtdProfessores; i++){
-        imprimirProfessor(professores[i]);
+        imprimirProfessor(copia[i]);
     }
 }
 
@@ -772,15 +790,22 @@ void BuscarPessoaPorNome(Aluno alunos[], int qtdAlunos, Professor professores[],
     }
 }
 
-
+/*---------------------------------------------------------
+  BLOCO DE FUNÇÕES DE DISCIPLINA
+  Gerencia disciplinas com controle de capacidade
+  Valida relações com professores e alunos matriculados
+-----------------------------------------------------------*/
 //Bloco funções disciplina
-void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas) {
+void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professor professores[], int qtdProfessores) {
     if (*qtdDisciplinas >= MAX) {
         printf("Limite de disciplinas atingido.\n");
         return;
     }
 
     Disciplina nova;
+    char nomeProfessor[100];
+    int professorEncontrado = 0;
+
     printf("Nome da disciplina: ");
     limparBuffer();
     fgets(nova.nome, 100, stdin);
@@ -793,13 +818,52 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas) {
     scanf("%d", &nova.semestre);
 
     printf("Capacidade máxima de alunos: ");
-    scanf("%d", &nova.capacidadeMaxima); // Nova linha
+    scanf("%d", &nova.capacidadeMaxima);
     limparBuffer();
 
-    printf("Nome do professor responsável: ");
-    limparBuffer();
-    fgets(nova.professor, 100, stdin);
-    nova.professor[strcspn(nova.professor, "\n")] = '\0';
+    // Validação do professor
+    do {
+        printf("Nome do professor responsável: ");
+        fgets(nomeProfessor, 100, stdin);
+        nomeProfessor[strcspn(nomeProfessor, "\n")] = '\0';
+
+        // Verifica se o professor existe
+        professorEncontrado = 0;
+        for(int i = 0; i < qtdProfessores; i++) {
+            if(strcmp(professores[i].nome, nomeProfessor) == 0) {
+                professorEncontrado = 1;
+                strcpy(nova.professor, nomeProfessor);
+                break;
+            }
+        }
+
+        if(!professorEncontrado) {
+            printf("\nProfessor não cadastrado! Professores disponíveis:\n");
+            
+            if(qtdProfessores == 0) {
+                printf("Nenhum professor cadastrado!\n");
+                printf("Disciplina não pode ser cadastrada sem professor válido.\n");
+                return;
+            }
+            
+            for(int i = 0; i < qtdProfessores; i++) {
+                printf("[%d] %s\n", i+1, professores[i].nome);
+            }
+            
+            int escolha;
+            printf("\nDigite o número do professor desejado (ou 0 para cancelar): ");
+            scanf("%d", &escolha);
+            limparBuffer();
+            
+            if(escolha > 0 && escolha <= qtdProfessores) {
+                strcpy(nova.professor, professores[escolha-1].nome);
+                professorEncontrado = 1;
+            } else {
+                printf("Cadastro de disciplina cancelado!\n");
+                return;
+            }
+        }
+    } while(!professorEncontrado);
 
     nova.qtdAlunos = 0;
     disciplinas[*qtdDisciplinas] = nova;
@@ -869,77 +933,194 @@ void ListarAlunosMenosDeTresDisciplinas(Aluno alunos[], int qtdAlunos, Disciplin
     }
 }
 
-void MatricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos) {
+void matricularAlunoEmDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos) {
     char codigoBusca[10];
-    char matriculaBusca[10];
-    int encontrado = 0;
+    char matriculaBusca[15]; // Aumentado para 15 (tamanho da matrícula)
+    int encontrouDisciplina = 0;
 
     printf("Digite o código da disciplina: ");
     scanf("%s", codigoBusca);
 
     for (int i = 0; i < qtdDisciplinas; i++) {
         if (strcmp(disciplinas[i].codigo, codigoBusca) == 0) {
-            encontrado = 1;
+            encontrouDisciplina = 1;
 
             // Verifica se a disciplina está cheia
-            if (disciplinas[i].qtdAlunos >= disciplinas[i].capacidadeMaxima) { // Correção aqui
+            if (disciplinas[i].qtdAlunos >= disciplinas[i].capacidadeMaxima) {
                 printf("Limite de alunos nesta disciplina atingido.\n");
                 return;
             }
 
-            // Restante do código (busca e matrícula do aluno)
-            // ...
+            // Busca o aluno pela matrícula
+            printf("Digite a matrícula do aluno: ");
+            scanf("%s", matriculaBusca);
+            limparBuffer();
+
+            int alunoEncontrado = 0;
+            for (int j = 0; j < qtdAlunos; j++) {
+                if (strcmp(alunos[j].matricula, matriculaBusca) == 0) {
+                    alunoEncontrado = 1;
+
+                    // Verifica se o aluno já está matriculado
+                    int jaMatriculado = 0;
+                    for (int k = 0; k < disciplinas[i].qtdAlunos; k++) {
+                        if (strcmp(disciplinas[i].matriculasAlunos[k], matriculaBusca) == 0) {
+                            jaMatriculado = 1;
+                            break;
+                        }
+                    }
+
+                    if (jaMatriculado) {
+                        printf("Aluno já está matriculado nesta disciplina.\n");
+                        return;
+                    }
+
+                    // Adiciona a matrícula à disciplina
+                    strcpy(disciplinas[i].matriculasAlunos[disciplinas[i].qtdAlunos], matriculaBusca);
+                    disciplinas[i].qtdAlunos++;
+                    printf("Aluno matriculado com sucesso!\n");
+                    return;
+                }
+            }
+
+            if (!alunoEncontrado) {
+                printf("Matrícula não encontrada.\n");
+                return;
+            }
         }
     }
 
-    if (!encontrado) {
+    if (!encontrouDisciplina) {
         printf("Disciplina não encontrada.\n");
     }
 }
 
-void RemoverAlunoDeDisciplina(Disciplina disciplinas[], int qtdDisciplinas) {
-    char codigoBusca[10];
-    char matriculaBusca[10];  // Alterado para string
-    int encontrado = 0;
 
-    printf("Digite o código da disciplina: ");
-    scanf("%s", codigoBusca);
+void atualizarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professor professores[], int qtdProfessores) {
+    if (*qtdDisciplinas == 0) {
+        printf("Não há disciplinas cadastradas.\n");
+        return;
+    }
 
-    for (int i = 0; i < qtdDisciplinas; i++) {
-        if (strcmp(disciplinas[i].codigo, codigoBusca) == 0) {
-            encontrado = 1;
+    char busca[100];
+    printf("Digite o nome ou código da disciplina: ");
+    limparBuffer();
+    fgets(busca, sizeof(busca), stdin);
+    busca[strcspn(busca, "\n")] = '\0';
 
-            printf("Digite a matrícula do aluno a ser removido: ");
-            scanf("%s", matriculaBusca);  // Lê como string
+    char buscaUpper[100];
+    ToUpperStr(buscaUpper, busca);
 
-            int indiceAluno = -1;
-            // Compara as strings das matrículas
-            for (int j = 0; j < disciplinas[i].qtdAlunos; j++) {
-                if (strcmp(disciplinas[i].matriculasAlunos[j], matriculaBusca) == 0) {
-                    indiceAluno = j;
-                    break;
-                }
-            }
+    int encontradas[MAX];
+    int qtdEncontradas = 0;
 
-            if (indiceAluno == -1) {
-                printf("Aluno não está matriculado nesta disciplina.\n");
-                return;
-            }
+    for (int i = 0; i < *qtdDisciplinas; i++) {
+        char nomeUpper[100], codigoUpper[10];
+        ToUpperStr(nomeUpper, disciplinas[i].nome);
+        ToUpperStr(codigoUpper, disciplinas[i].codigo);
 
-            // Remove o aluno deslocando os elementos com strcpy
-            for (int j = indiceAluno; j < disciplinas[i].qtdAlunos - 1; j++) {
-                strcpy(disciplinas[i].matriculasAlunos[j], disciplinas[i].matriculasAlunos[j + 1]);
-            }
-
-            disciplinas[i].qtdAlunos--;
-            printf("Aluno removido da disciplina com sucesso!\n");
-            return;
+        if (strstr(nomeUpper, buscaUpper) != NULL || strstr(codigoUpper, buscaUpper) != NULL) {
+            printf("[%d] %s (%s)\n", qtdEncontradas, disciplinas[i].nome, disciplinas[i].codigo);
+            encontradas[qtdEncontradas] = i;
+            qtdEncontradas++;
         }
     }
 
-    if (!encontrado) {
-        printf("Disciplina não encontrada.\n");
+    if (qtdEncontradas == 0) {
+        printf("Nenhuma disciplina encontrada.\n");
+        return;
     }
+
+    int opcao;
+    while(1) {
+        printf("Digite o índice da disciplina que deseja atualizar: ");
+        if(scanf("%d", &opcao) == 1 && opcao >= 0 && opcao < qtdEncontradas) {
+            limparBuffer();
+            break;
+        } else {
+            printf("Índice inválido!\n");
+            limparBuffer();
+        }
+    }
+
+    int indice = encontradas[opcao];
+    Disciplina *d = &disciplinas[indice];
+    char buffer[100];
+
+    printf("\nAtualizando disciplina: %s (%s)\n", d->nome, d->codigo);
+    
+    // Nome
+    printf("Novo nome (ENTER para manter '%s'): ", d->nome);
+    fgets(buffer, sizeof(buffer), stdin);
+    if(buffer[0] != '\n') {
+        buffer[strcspn(buffer, "\n")] = '\0';
+        strcpy(d->nome, buffer);
+    }
+
+    // Código
+    printf("Novo código (ENTER para manter '%s'): ", d->codigo);
+    fgets(buffer, sizeof(buffer), stdin);
+    if(buffer[0] != '\n') {
+        buffer[strcspn(buffer, "\n")] = '\0';
+        strcpy(d->codigo, buffer);
+    }
+
+    // Semestre
+    printf("Novo semestre (ENTER para manter %d): ", d->semestre);
+    fgets(buffer, sizeof(buffer), stdin);
+    if(buffer[0] != '\n') {
+        sscanf(buffer, "%d", &d->semestre);
+    }
+
+    // Capacidade
+    printf("Nova capacidade máxima (ENTER para manter %d): ", d->capacidadeMaxima);
+    fgets(buffer, sizeof(buffer), stdin);
+    if(buffer[0] != '\n') {
+        sscanf(buffer, "%d", &d->capacidadeMaxima);
+    }
+
+    // Professor
+    while(1) {
+        printf("Novo professor (ENTER para manter '%s'): ", d->professor);
+        fgets(buffer, sizeof(buffer), stdin);
+        buffer[strcspn(buffer, "\n")] = '\0';
+
+        if(buffer[0] == '\n') break; // Mantém o atual
+
+        int professorExiste = 0;
+        for(int i = 0; i < qtdProfessores; i++) {
+            if(strcmp(professores[i].nome, buffer) == 0) {
+                strcpy(d->professor, buffer);
+                professorExiste = 1;
+                break;
+            }
+        }
+
+        if(professorExiste) break;
+
+        printf("Professor não encontrado! Selecione um válido:\n");
+        for(int i = 0; i < qtdProfessores; i++) {
+            printf("[%d] %s\n", i+1, professores[i].nome);
+        }
+
+        int escolha;
+        while(1) {
+            printf("Digite o número do professor (0 para cancelar): ");
+            if(scanf("%d", &escolha) == 1 && escolha >= 0 && escolha <= qtdProfessores) {
+                limparBuffer();
+                break;
+            } else {
+                printf("Entrada inválida!\n");
+                limparBuffer();
+            }
+        }
+
+        if(escolha == 0) break;
+        strcpy(d->professor, professores[escolha-1].nome);
+        break;
+    }
+
+    printf("Disciplina atualizada com sucesso!\n");
 }
 
 
@@ -1037,88 +1218,109 @@ void ListarUmaDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alu
     }
 }
 
+/*---------------------------------------------------------
+  BLOCO DE FUNÇÕES DE RELATÓRIOS
+  Gera relatórios consolidados com diferentes critérios
+  Oferece opções de filtragem e ordenação
+-----------------------------------------------------------*/
+
+// Função para Menu de Relatórios de Alunos
+void MenuRelatoriosAlunos(Aluno alunos[], int qtdAlunos) {
+    int escolha;
+    do {
+        printf("\n=== RELATÓRIOS DE ALUNOS ===\n");
+        printf("1. Listar Todos\n");
+        printf("2. Listar por Sexo\n");
+        printf("3. Listar por Nome (Ordenado)\n");
+        printf("4. Listar por Data de Nascimento\n");
+        printf("5. Aniversariantes do Mês\n");
+        printf("0. Voltar\n");
+        printf("Escolha: ");
+        scanf("%d", &escolha);
+
+        switch (escolha) {
+            case 1: ListarTodosAlunos(alunos, qtdAlunos); break;
+            case 2: ListarAlunosPorSexo(alunos, qtdAlunos); break;
+            case 3: ListarAlunosOrdenadosPorNome(alunos, qtdAlunos); break;
+            case 4: ListarAlunosPorDataNascimento(alunos, qtdAlunos); break;
+            case 5: ListarAniversariantesDoMes(alunos, qtdAlunos); break;
+        }
+    } while (escolha != 0);
+}
+
+
+// Menu de Relatórios de Professores
+void MenuRelatoriosProfessores(Professor professores[], int qtdProfessores) {
+    int escolha;
+    do {
+        printf("\n=== RELATÓRIOS DE PROFESSORES ===\n");
+        printf("1. Listar Todos\n");
+        printf("2. Listar por Sexo\n");
+        printf("3. Listar por Nome (Ordenado)\n");
+        printf("4. Listar por Data de Nascimento\n");
+        printf("0. Voltar\n");
+        printf("Escolha: ");
+        scanf("%d", &escolha);
+
+        switch (escolha) {
+            case 1: listarTodosProfessores(professores, qtdProfessores); break;
+            case 2: ListarProfessoresPorSexo(professores, qtdProfessores); break;
+            case 3: listarProfessorPorNome(professores, qtdProfessores); break;
+            case 4: ListarProfessoresPorDataNascimento(professores, qtdProfessores); break;
+        }
+    } while (escolha != 0);
+}
+
+
+// Menu de Relatórios de Disciplinas
+void MenuRelatoriosDisciplinas(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos) {
+    int escolha;
+    do {
+        printf("\n=== RELATÓRIOS DE DISCIPLINAS ===\n");
+        printf("1. Listar Todas\n");
+        printf("2. Listar com Mais de 40 Alunos\n");
+        printf("3. Listar Detalhes de uma Disciplina\n");
+        printf("0. Voltar\n");
+        printf("Escolha: ");
+        scanf("%d", &escolha);
+
+        switch (escolha) {
+            case 1: listarTodasDisciplinas(disciplinas, qtdDisciplinas); break;
+            case 2: listarDisciplinasMais40(disciplinas, qtdDisciplinas); break;
+            case 3: ListarUmaDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos); break;
+        }
+    } while (escolha != 0);
+}
 
 void ExibirMenuRelatorios(Aluno alunos[], int qtdAlunos, Professor professores[], int qtdProfessores, Disciplina disciplinas[], int qtdDisciplinas) {
     int escolha;
     do {
-        printf("\n===== MENU DE RELATÓRIOS =====\n");
-        printf("1. Listar Alunos\n");
-        printf("2. Listar Professores\n");
-        printf("3. Listar Disciplinas\n");
-        printf("4. Listar disciplina especifica com dados dos Alunos\n");
-        printf("5. Listar Alunos por Sexo\n");
-        printf("6. Listar Alunos Ordenados por Nome\n");
-        printf("7. Listar Alunos Ordenados por Data de Nascimento\n");
-        printf("8. Listar Professores por Sexo\n");
-        printf("9. Listar Professores Ordenados por Nome\n");
-        printf("10. Listar Professores Ordenados por Data de Nascimento\n");
-        printf("11. Aniversariantes do Mês\n");
-        printf("12. Buscar Pessoa por Substring no Nome\n");
-        printf("13. Listar Alunos com Menos de 3 Disciplinas\n");
-        printf("14. Listar Disciplinas com Mais de 40 Alunos\n");
-        printf("0. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("\n=== MENU DE RELATÓRIOS ===\n");
+        printf("1. Relatórios de Alunos\n");
+        printf("2. Relatórios de Professores\n");
+        printf("3. Relatórios de Disciplinas\n");
+        printf("4. Buscar Pessoa por Nome\n");
+        printf("0. Voltar\n");
+        printf("Escolha: ");
         scanf("%d", &escolha);
-        
-        switch (escolha) {
-            case 1:
-                ListarTodosAlunos(alunos, qtdAlunos);
-                break;
-            case 2:
-                listarTodosProfessores(professores, qtdProfessores);
-                break;
-            case 3:
-                listarTodasDisciplinas(disciplinas, qtdDisciplinas);
-                break;
-            case 4:
-                ListarUmaDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos);
-                break;
-            case 5:
-                ListarAlunosPorSexo(alunos, qtdAlunos);
-                break;
-            case 6:
-                ListarAlunosOrdenadosPorNome(alunos, qtdAlunos);
-                break;
-            case 7:
-                ListarAlunosPorDataNascimento(alunos, qtdAlunos);
-                break;
-            case 8:
-                ListarProfessoresPorSexo(professores, qtdProfessores); 
-                break;
-            case 9:
-                listarProfessorPorNome(professores, qtdProfessores);
-                break;
-            case 10:
-                ListarProfessoresPorDataNascimento(professores, qtdProfessores);
-                break;
-            case 11: {
-                ListarAniversariantesDoMes(alunos, qtdAlunos);
-                break;
-            }
-            case 12: {
-               char busca[100];
-				printf("Digite parte do nome a buscar: ");
-				limparBuffer();  // sua função para limpar o buffer de entrada
-				fgets(busca, sizeof(busca), stdin);
-				busca[strcspn(busca, "\n")] = '\0';
 
-				BuscarPessoaPorNome(alunos, qtdAlunos, professores, qtdProfessores, busca);
+        switch (escolha) {
+            case 1: MenuRelatoriosAlunos(alunos, qtdAlunos); break;
+            case 2: MenuRelatoriosProfessores(professores, qtdProfessores); break;
+            case 3: MenuRelatoriosDisciplinas(disciplinas, qtdDisciplinas, alunos, qtdAlunos); break;
+            case 4: {
+                char busca[100];
+                printf("Digite parte do nome: ");
+                limparBuffer();
+                fgets(busca, sizeof(busca), stdin);
+                busca[strcspn(busca, "\n")] = '\0';
+                BuscarPessoaPorNome(alunos, qtdAlunos, professores, qtdProfessores, busca);
                 break;
             }
-            case 13:
-                ListarAlunosMenosDeTresDisciplinas(alunos, qtdAlunos, disciplinas, qtdDisciplinas);
-                break;
-            case 14:
-                listarDisciplinasMais40(disciplinas, qtdDisciplinas);
-                break;
-            case 0:
-                printf("Saindo...\n");
-                break;
-            default:
-                printf("Opção inválida! Tente novamente.\n");
         }
-    } while (escolha != 0);  // Fechamento do do-while
+    } while (escolha != 0);
 }
+
 
 int main() {
     Aluno alunos[MAX];
@@ -1136,8 +1338,7 @@ int main() {
         printf("1 - Aluno\n");
         printf("2 - Professor\n");
         printf("3 - Disciplina\n");
-        printf("4 - Matricular Aluno em Disciplina\n");
-        printf("5 - Relatórios\n");
+        printf("4 - Relatórios\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -1150,7 +1351,7 @@ int main() {
             case 1:
                 printf("\n--- Modulo Aluno ---\n");
 				int opc;
-				printf("Desejas:\n[1] Cadastrar\n[2] Atualizar\n[3] Remover\n");
+				printf("Desejas:\n[1]- Cadastrar\n[2]- Atualizar\n[3]- Remover\n[4]- Matricular Aluno em Disciplina\n");
 				printf("Digite a opção: ");
 				scanf("%d", &opc); 
 				limparBuffer();   
@@ -1164,6 +1365,10 @@ int main() {
 				else if (opc == 3) {
 				    removerAluno(alunos, &qtdAlunos);
 				}
+                else if(opc ==4){
+                    printf("\n--- Matricular Aluno em Disciplina ---\n");
+                    MatricularAlunoEmDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos);
+                }
 				else {
 				    printf("Opção inválida.\n");
 				}
@@ -1176,7 +1381,7 @@ int main() {
 				printf("Deseja:\n[1] Cadastrar\n[2] Atualizar\n[3] Remover\n");
 				printf("Digite a opção: ");
 				scanf("%d", &opc);
-				limparBuffer();  // Se essa função estiver definida no seu código
+				limparBuffer();  
 				
 				if (opc == 1) {
 				    CadastrarProfessor(professores, &qtdProfessores);
@@ -1193,31 +1398,27 @@ int main() {
 
                 break;
 
-            case 3:
+                case 3:
                 printf("\n--- Módulo Disciplina ---\n");
-				printf("Deseja:\n[1] Cadastrar\n[2] Remover\n");
-				printf("Digite a opção: ");
-				scanf("%d", &opc);
-				limparBuffer();
-				
-				if (opc == 1) {
-				    CadastrarDisciplina(disciplinas, &qtdDisciplinas);
-				}
-				else if (opc == 2) {
-				    removerDisciplina(disciplinas, &qtdDisciplinas);
-				}
-				else {
-				    printf("Opção inválida.\n");
-				}
-
+                printf("Deseja:\n[1] Cadastrar\n[2] Atualizar\n[3] Remover\n");
+                printf("Digite a opção: ");
+                scanf("%d", &opc);
+                limparBuffer();
+                
+                if (opc == 1) {
+                    CadastrarDisciplina(disciplinas, &qtdDisciplinas, professores, qtdProfessores);
+                }
+                else if (opc == 2) {
+                    atualizarDisciplina(disciplinas, &qtdDisciplinas, professores, qtdProfessores);
+                }
+                else if (opc == 3) {
+                    removerDisciplina(disciplinas, &qtdDisciplinas);
+                }                 
+                else {
+                    printf("Opção inválida.\n");
+                }
                 break;
-
             case 4:
-                printf("\n--- Matricular Aluno em Disciplina ---\n");
-                MatricularAlunoEmDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos);
-                break;
-
-            case 5:
                 ExibirMenuRelatorios(alunos, qtdAlunos, professores, qtdProfessores, disciplinas, qtdDisciplinas);
                 break;
             
