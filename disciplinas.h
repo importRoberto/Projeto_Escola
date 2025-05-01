@@ -8,7 +8,7 @@
 typedef struct {
     char nome[100];
     char codigo[10];
-    int semestre;
+    float semestre;
     char professor[100];
     char matriculasAlunos[MAX_ALUNOS][10]; // Armazena as matrículas dos alunos matriculados
     int capacidadeMaxima; 

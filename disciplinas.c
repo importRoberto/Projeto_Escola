@@ -36,7 +36,7 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
     ToUpperStr(nova.codigo, codigoTemp);
     
     printf("Semestre: ");
-    scanf("%d", &nova.semestre);
+    scanf("%f", &nova.semestre);
     limparBuffer();
 
     printf("Capacidade máxima de alunos: ");
@@ -298,11 +298,14 @@ void atualizarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
     }
 
     // Semestre
-    printf("Novo semestre (ENTER para manter %d): ", d->semestre);
+
+    printf("Novo semestre (ENTER para manter %.1f): ", d->semestre);
     fgets(buffer, sizeof(buffer), stdin);
-    if(buffer[0] != '\n') {
-        sscanf(buffer, "%d", &d->semestre);
-    }
+    limparBuffer(); // Limpa o buffer de entrada após o fgets()
+
+    if (buffer[0] != '\n') {
+        sscanf(buffer, "%f", &d->semestre);
+}
 
     // Capacidade
     printf("Nova capacidade máxima (ENTER para manter %d): ", d->capacidadeMaxima);
@@ -424,7 +427,7 @@ void ListarUmaDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alu
             printf("\n--- Dados da Disciplina ---\n");
             printf("Nome: %s\n", disciplinas[i].nome);
             printf("Código: %s\n", disciplinas[i].codigo);
-            printf("Semestre: %d\n", disciplinas[i].semestre);
+            printf("Semestre: %.1f\n", disciplinas[i].semestre);
             printf("Professor: %s\n", disciplinas[i].professor);
             printf("Capacidade Máxima: %d\n", disciplinas[i].capacidadeMaxima); // Novo campo
             printf("Alunos Matriculados: %d\n", disciplinas[i].qtdAlunos);
