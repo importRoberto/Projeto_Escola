@@ -75,65 +75,80 @@ void gerarMatriculaAluno(char matricula[]) {
   }
 
 
-void PreencherDadosComuns(char nome[], char matricula[], char dataNascimento[], char *sexo, char cpf[],int tipo) {
+void PreencherDadosComuns(char nome[], char matricula[], char dataNascimento[], char *sexo, char cpf[], int tipo) {
     char nomeOriginal[100];
-    printf("Nome: ");
-    fgets(nomeOriginal, 100, stdin);
-    nomeOriginal[strcspn(nomeOriginal, "\n")] = '\0';
-    ToUpperStr(nome, nomeOriginal);
+    
+    // Validação do nome
+    while (1) {
+        printf("Nome: ");
+        fgets(nomeOriginal, sizeof(nomeOriginal), stdin);
+        nomeOriginal[strcspn(nomeOriginal, "\n")] = '\0'; // Remove o '\n'
 
-    if(tipo==1){
+        int valido = 1;
+        for (int i = 0; nomeOriginal[i] != '\0'; i++) {
+            if (!isalpha(nomeOriginal[i]) && nomeOriginal[i] != ' ' && nomeOriginal[i] != '\'') {
+                valido = 0;
+                break;
+            }
+        }
+
+        if (valido && strlen(nomeOriginal) > 0) { // Verifica se o nome não está vazio
+            ToUpperStr(nome, nomeOriginal); // Converte para maiúsculas
+            break;
+        } else {
+            printf("Nome inválido. Use apenas letras, espaços ou apóstrofos.\n");
+        }
+    }
+
+    if (tipo == 1) {
         gerarMatriculaAluno(matricula);
-    }else if(tipo==2){
+    } else if (tipo == 2) {
         gerarMatriculaProfessor(matricula);
     }
 
-	// Data de nascimento
-	while (1) {
-	    printf("Data de nascimento (DD/MM/AAAA): ");
-	    scanf("%s", dataNascimento);
-	    limparBuffer();
-	
-	    // Verifica o formato básico da data: deve ter 10 caracteres no total e '/' nas posições 2 e 5
-	    if (strlen(dataNascimento) == 10 &&
-	        dataNascimento[2] == '/' &&
-	        dataNascimento[5] == '/') {
-	        break;
-	    } else {
-	        printf("Formato inválido. Use o formato DD/MM/AAAA.\n");
-	    }
-	}
-	
-	// Sexo
-	printf("Sexo (M/F): ");
-	scanf(" %c", sexo);
-	limparBuffer();
-	*sexo = toupper(*sexo);
-	
-	while ((*sexo != 'F') && (*sexo != 'M')) {
-	    printf("Entrada inválida. Digite 'M' para masculino ou 'F' para feminino: ");
-	    scanf(" %c", sexo);
-	    limparBuffer();
-	    *sexo = toupper(*sexo);
-	}
-	
-	// CPF
-	while (1) {
-	    printf("CPF (000.000.000-00): ");
-	    scanf("%s", cpf);
-	    limparBuffer();
-	
-	    // Verifica se tem exatamente 14 caracteres e os pontos e hífen nas posições corretas
-	    if (strlen(cpf) == 14 &&
-	        cpf[3] == '.' &&
-	        cpf[7] == '.' &&
-	        cpf[11] == '-') {
-	        break;
-	    } else {
-	        printf("CPF inválido. Use o formato 000.000.000-00.\n");
-	    }
-	}
+    // Data de nascimento
+    while (1) {
+        printf("Data de nascimento (DD/MM/AAAA): ");
+        scanf("%s", dataNascimento);
+        limparBuffer();
 
+        if (strlen(dataNascimento) == 10 && 
+        dataNascimento[2] == '/' && 
+        dataNascimento[5] == '/') {
+            break;
+        } else {
+            printf("Formato inválido. Use o formato DD/MM/AAAA.\n");
+        }
+    }
+
+    // Sexo
+    printf("Sexo (M/F): ");
+    scanf(" %c", sexo);
+    limparBuffer();
+    *sexo = toupper(*sexo);
+
+    while ((*sexo != 'F') && (*sexo != 'M')) {
+        printf("Entrada inválida. Digite 'M' para masculino ou 'F' para feminino: ");
+        scanf(" %c", sexo);
+        limparBuffer();
+        *sexo = toupper(*sexo);
+    }
+
+    // CPF
+    while (1) {
+        printf("CPF (000.000.000-00): ");
+        scanf("%s", cpf);
+        limparBuffer();
+
+        if (strlen(cpf) == 14 && 
+        cpf[3] == '.' && 
+        cpf[7] == '.' && 
+        cpf[11] == '-') {
+            break;
+        } else {
+            printf("CPF inválido. Use o formato 000.000.000-00.\n");
+        }
+    }
 }
 
 int CompararDatas(const char *data1, const char *data2) {
