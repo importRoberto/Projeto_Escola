@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "alunos.h"
-#include "utilitarios.h"
-#include "professores.h"
-
+#include "ProjetoEscola.h"
 /*---------------------------------------------------------
   BLOCO DE FUNÇÕES UTILITÁRIAS
   Funções genéricas usadas em múltiplos módulos do sistema

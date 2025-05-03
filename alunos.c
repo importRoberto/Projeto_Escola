@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "alunos.h"
-#include "utilitarios.h"
-#include "professores.h"
+#include "ProjetoEscola.h"
 
 
 void CadastrarAluno(Aluno alunos[], int *qtdAlunos) {

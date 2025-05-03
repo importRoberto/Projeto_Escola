@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "professores.h"
-#include "utilitarios.h" 
+#include "ProjetoEscola.h"
 
 
 /*---------------------------------------------------------
@@ -11,10 +10,6 @@
   Operações CRUD para professores com geração de matrícula
   Valida integridade dos dados e relações com disciplinas
 -----------------------------------------------------------*/
-static int contadorProfessor = 0;
-
-
-
 
 void CadastrarProfessor(Professor professores[], int *qtdProfessores) {
     if (*qtdProfessores >= MAX) {
@@ -109,7 +104,7 @@ void atualizarProfessor(Professor professores[], int qtdProfessores){
         ToUpperStr(nomeUpper, professores[i].nome);
 
         if(strstr(nomeUpper, buscaUpper)){
-            printf("[%d] Nome: %s | Matrícula: %d\n", qtdEncontrados, professores[i].nome, professores[i].matricula);
+            printf("[%d] Nome: %s | Matrícula: %s\n", qtdEncontrados, professores[i].nome, professores[i].matricula);
             encontrados[qtdEncontrados] = i;
             qtdEncontrados++;
         }
@@ -162,8 +157,8 @@ void atualizarProfessor(Professor professores[], int qtdProfessores){
                 
             while((novoSexo != 'F')&&(novoSexo != 'M')){
                 printf("Entrada inválida. Digite 'M' para masculino ou 'F' para feminino:");
-                scanf(" %c", novoSexo);
-                limparBuffer;
+                scanf(" %c", &novoSexo);
+                limparBuffer();
                 novoSexo=toupper(novoSexo);
         }
         professores[indiceReal].sexo = novoSexo;

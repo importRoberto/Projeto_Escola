@@ -2,11 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "alunos.h"
-#include "professores.h"
-#include "disciplinas.h"
-#include "utilitarios.h"
-#include "relatorios.h"
+#include "ProjetoEscola.h"
 
 
 int main() {
