@@ -477,25 +477,29 @@ void listarDisciplinasComMaisDe40Vagas(Disciplina disciplinas[], int qtdDiscipli
     }
     printf("--------------------------------\n");
 }
-
 void listarDisciplinasSemAlunos(Disciplina disciplinas[], int qtdDisciplinas) {
-    int encontrou = 0;
     printf("\n--- Disciplinas sem alunos matriculados ---\n");
     
+    if(qtdDisciplinas == 0) { // Verifica primeiro se há disciplinas
+        printf("Nenhuma disciplina cadastrada no sistema.\n");
+        printf("------------------------------------------\n");
+        return;
+    }
+    
+    int encontrou = 0;
     for(int i = 0; i < qtdDisciplinas; i++) {
         if(disciplinas[i].qtdAlunos == 0) {
-            printf("[%d] Código: %s | Nome: %s | Professor: %s | Semestre: %.1f\n",
+            printf("[%d] Código: %s | Nome: %s | Professor: %s\n",
                    i + 1,
                    disciplinas[i].codigo,
                    disciplinas[i].nome,
-                   disciplinas[i].professor,
-                   disciplinas[i].semestre);
+                   disciplinas[i].professor);
             encontrou = 1;
         }
     }
     
     if(!encontrou) {
-        printf("Todas as disciplinas têm alunos matriculados.\n");
+        printf("Todas as %d disciplinas possuem alunos matriculados.\n", qtdDisciplinas);
     }
     printf("------------------------------------------\n");
 }
