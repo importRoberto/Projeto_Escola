@@ -46,6 +46,12 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
         fgets(nomeProfessor, 100, stdin);
         nomeProfessor[strcspn(nomeProfessor, "\n")] = '\0';
 
+        // Verifica se não há professores cadastrados
+        if (qtdProfessores == 0) {
+            printf("\nNão é possível cadastrar a disciplina: não existem professores cadastrados.\n");
+            return; // Encerra a função
+        }
+
         // Converter entrada para maiúsculas
         char nomeProfessorUpper[100];
         ToUpperStr(nomeProfessorUpper, nomeProfessor);
@@ -65,13 +71,7 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
         }
 
         if(!professorEncontrado) {
-            printf("\nProfessor não cadastrado! Professores disponíveis:\n");
-            
-            if(qtdProfessores == 0) {
-                printf("Nenhum professor cadastrado!\n");
-                printf("Disciplina não pode ser cadastrada sem professor válido.\n");
-                return;
-            }
+            printf("\nProfessor não encontrado! Professores disponíveis:\n");
             
             for(int i = 0; i < qtdProfessores; i++) {
                 printf("[%d] %s\n", i+1, professores[i].nome);
@@ -98,8 +98,13 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
     printf("\nDisciplina cadastrada com sucesso!\n\n");
 }
 
+
 void listarTodasDisciplinas(Disciplina disciplinas[], int qtdDisciplinas){
     printf("\n--- Lista de Disciplinas ---\n");
+    if(qtdDisciplinas == 0){
+        printf("Não existem disciplinas cadastradas.\n");
+        return;
+    }
     for(int i = 0; i < qtdDisciplinas; i++){  
         printf("[%d] Nome: %s | Código: %s | Semestre: %.1f | Professor: %s\n",i + 1,disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].semestre,disciplinas[i].professor);
     }
@@ -112,7 +117,7 @@ void listarDisciplinasMais40(Disciplina disciplinas[], int qtdDisciplinas){
     printf("\n--- Lista de Disciplinas com mais de 40 alunos ---\n");
     for(int i =0; i < qtdDisciplinas; i++){
         if(disciplinas[i].qtdAlunos>40){
-        printf("[%d] Nome: %s | Código: %s | Professor: %s\n | Semestre: %.1f", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor, disciplinas[i].semestre);
+        printf("[%d] Nome: %s | Código: %s | Professor: %s| Semestre: %.1f\n", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor, disciplinas[i].semestre);
         encontrou = 1;
     }
 }
@@ -489,7 +494,7 @@ void listarDisciplinasSemAlunos(Disciplina disciplinas[], int qtdDisciplinas) {
     int encontrou = 0;
     for(int i = 0; i < qtdDisciplinas; i++) {
         if(disciplinas[i].qtdAlunos == 0) {
-            printf("[%d] Código: %s | Nome: %s | Professor: %s\n | Semestre: %.1f",
+            printf("[%d] Código: %s | Nome: %s | Professor: %s | Semestre: %.1f\n",
                    i + 1,
                    disciplinas[i].codigo,
                    disciplinas[i].nome,
