@@ -489,11 +489,12 @@ void listarDisciplinasSemAlunos(Disciplina disciplinas[], int qtdDisciplinas) {
     int encontrou = 0;
     for(int i = 0; i < qtdDisciplinas; i++) {
         if(disciplinas[i].qtdAlunos == 0) {
-            printf("[%d] Código: %s | Nome: %s | Professor: %s\n",
+            printf("[%d] Código: %s | Nome: %s | Professor: %s\n | Semestre: %.1f",
                    i + 1,
                    disciplinas[i].codigo,
                    disciplinas[i].nome,
-                   disciplinas[i].professor);
+                   disciplinas[i].professor,
+                   disciplinas[i].semestre);
             encontrou = 1;
         }
     }
