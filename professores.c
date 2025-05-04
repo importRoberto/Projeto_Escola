@@ -131,15 +131,34 @@ void atualizarProfessor(Professor professores[], int qtdProfessores){
         printf("Atualizando dados do professor: %s\n", professores[indiceReal].nome);
         char buffer[100];
 
-        //Atualização do nome
-
-        printf("Novo nome (ENTER para manter '%s'):", professores[indiceReal].nome);
+        //Atualizando nome
+        printf("Novo nome (ENTER para manter '%s'): ", professores[indiceReal].nome);
         fgets(buffer, sizeof(buffer), stdin);
-        if(buffer[0] != '\n'){
+        
+        // Se usuário não pressionou ENTER (quer alterar)
+        if(buffer[0] != '\n') {
+            // Remove quebra de linha
             buffer[strcspn(buffer, "\n")] = '\0';
-            strcpy(professores[indiceReal].nome, buffer);
+            
+            // Validação do novo nome
+            int valido = 1;
+            for(int i = 0; buffer[i] != '\0'; i++) {
+                if(!isalpha(buffer[i]) && buffer[i] != ' ' && buffer[i] != '\'') {
+                    valido = 0;
+                    break;
+                }
+            }
+            
+            if(valido && strlen(buffer) > 0) {
+                // Converter para maiúsculas antes de copiar
+                ToUpperStr(professores[indiceReal].nome, buffer);
+                printf("Nome alterado com sucesso!\n");
+            } else {
+                printf("Nome inválido. Alteração cancelada.\n");
+            }
+        } else {
+            printf("Nome mantido sem alterações.\n");
         }
-
         // Data de Nascimento
         printf("Nova data de nascimento(ENTER para manter '%s'):", professores[indiceReal].dataNascimento);
         fgets(buffer, sizeof(buffer), stdin);
