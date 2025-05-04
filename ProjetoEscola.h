@@ -85,6 +85,9 @@ void removerDisciplina(Disciplina disciplinas[], int *qtdDisciplinas);
 
 void ListarUmaDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alunos[], int qtdAlunos);
 
+void listarDisciplinasComMaisDe40Vagas(Disciplina disciplinas[], int qtdDisciplinas);
+
+void listarDisciplinasSemAlunos(Disciplina disciplinas[], int qtdDisciplinas);
 
 //Relatórios
 

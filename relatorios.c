@@ -70,6 +70,8 @@ void MenuRelatoriosDisciplinas(Disciplina disciplinas[], int qtdDisciplinas, Alu
         printf("1. Listar Todas\n");
         printf("2. Listar com Mais de 40 Alunos\n");
         printf("3. Listar Detalhes de uma Disciplina\n");
+        printf("4. Listar com Mais de 40 Vagas\n");
+        printf("5. Listar Disciplina sem Aluno");
         printf("0. Voltar\n");
         printf("Escolha: ");
         scanf("%d", &escolha);
@@ -78,6 +80,8 @@ void MenuRelatoriosDisciplinas(Disciplina disciplinas[], int qtdDisciplinas, Alu
             case 1: listarTodasDisciplinas(disciplinas, qtdDisciplinas); break;
             case 2: listarDisciplinasMais40(disciplinas, qtdDisciplinas); break;
             case 3: ListarUmaDisciplina(disciplinas, qtdDisciplinas, alunos, qtdAlunos); break;
+            case 4: listarDisciplinasComMaisDe40Vagas(disciplinas, qtdDisciplinas); break;
+            case 5: listarDisciplinasSemAlunos(disciplinas, qtdDisciplinas); break;
         }
     } while (escolha != 0);
 }

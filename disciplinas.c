@@ -101,7 +101,7 @@ void CadastrarDisciplina(Disciplina disciplinas[], int *qtdDisciplinas, Professo
 void listarTodasDisciplinas(Disciplina disciplinas[], int qtdDisciplinas){
     printf("\n--- Lista de Disciplinas ---\n");
     for(int i = 0; i < qtdDisciplinas; i++){  
-        printf("[%d] Nome: %s | Código: %s | Professor: %s\n", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor);
+        printf("[%d] Nome: %s | Código: %s | Semestre: %.1f | Professor: %s\n",i + 1,disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].semestre,disciplinas[i].professor);
     }
     printf("--------------------------------\n");
 }
@@ -112,7 +112,7 @@ void listarDisciplinasMais40(Disciplina disciplinas[], int qtdDisciplinas){
     printf("\n--- Lista de Disciplinas com mais de 40 alunos ---\n");
     for(int i =0; i < qtdDisciplinas; i++){
         if(disciplinas[i].qtdAlunos>40){
-        printf("[%d] Nome: %s | Código: %s | Professor: %s\n", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor);
+        printf("[%d] Nome: %s | Código: %s | Professor: %s\n | Semestre: %.1f", i+1, disciplinas[i].nome, disciplinas[i].codigo, disciplinas[i].professor, disciplinas[i].semestre);
         encontrou = 1;
     }
 }
@@ -455,4 +455,47 @@ void ListarUmaDisciplina(Disciplina disciplinas[], int qtdDisciplinas, Aluno alu
     if (!encontrada) {
         printf("Disciplina não encontrada.\n");
     }
+}
+
+void listarDisciplinasComMaisDe40Vagas(Disciplina disciplinas[], int qtdDisciplinas) {
+    int encontrou = 0;
+    printf("\n--- Lista de Disciplinas com mais de 40 vagas ---\n");
+    for (int i = 0; i < qtdDisciplinas; i++) {
+        if (disciplinas[i].capacidadeMaxima > 40) {
+            printf("[%d] Nome: %s | Código: %s | Professor: %s | Semestre: %.1f | Vagas: %d\n", 
+                   i + 1, 
+                   disciplinas[i].nome, 
+                   disciplinas[i].codigo, 
+                   disciplinas[i].professor, 
+                   disciplinas[i].semestre,
+                   disciplinas[i].capacidadeMaxima);  // Mostra a capacidade total
+            encontrou = 1;
+        }
+    }
+    if (!encontrou) {
+        printf("Nenhuma disciplina com mais de 40 vagas cadastrada.\n");
+    }
+    printf("--------------------------------\n");
+}
+
+void listarDisciplinasSemAlunos(Disciplina disciplinas[], int qtdDisciplinas) {
+    int encontrou = 0;
+    printf("\n--- Disciplinas sem alunos matriculados ---\n");
+    
+    for(int i = 0; i < qtdDisciplinas; i++) {
+        if(disciplinas[i].qtdAlunos == 0) {
+            printf("[%d] Código: %s | Nome: %s | Professor: %s | Semestre: %.1f\n",
+                   i + 1,
+                   disciplinas[i].codigo,
+                   disciplinas[i].nome,
+                   disciplinas[i].professor,
+                   disciplinas[i].semestre);
+            encontrou = 1;
+        }
+    }
+    
+    if(!encontrou) {
+        printf("Todas as disciplinas têm alunos matriculados.\n");
+    }
+    printf("------------------------------------------\n");
 }
